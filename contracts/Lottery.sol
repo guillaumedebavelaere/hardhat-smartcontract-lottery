@@ -90,7 +90,7 @@ contract Lottery is VRFConsumerBaseV2, AutomationCompatibleInterface {
      */
     function checkUpkeep(
         bytes memory /* checkData */
-    ) public view override returns (bool upkeepNeeded, bytes memory /* performData */) {
+    ) public override returns (bool upkeepNeeded, bytes memory /* performData */) {
         bool isOpen = _lotteryState == LotteryState.OPEN;
         bool timePassed = (block.timestamp - _lastTimestamp) > _interval;
         bool hasPlayers = _players.length > 0;
@@ -167,5 +167,9 @@ contract Lottery is VRFConsumerBaseV2, AutomationCompatibleInterface {
 
     function getInterval() external view returns(uint256) {
         return _interval;
+    }
+
+    function getRecentWinner() public view returns (address) {
+        return _recentWinner;
     }
 }

@@ -14,11 +14,12 @@ const deployLottery: DeployFunction = async function (
     const { deploy } = deployments;
     const { deployer } = await getNamedAccounts();
 
-    let vrfCoordinatorV2Address, subscriptionId;
+    let vrfCoordinatorV2Mock, vrfCoordinatorV2Address, subscriptionId;
     const chainId = network.config.chainId || 31337;
 
     if (developmentChains.includes(network.name)) {
-        const vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock");
+        const deployerSigner = await ethers.getSigner(deployer);
+        vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock");
         vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address;  
         const transactionResponse = await vrfCoordinatorV2Mock.createSubscription();
         const receipt = await transactionResponse.wait(1);
@@ -46,6 +47,11 @@ const deployLottery: DeployFunction = async function (
         log: true,
         waitConfirmations: blockConfirmations
     });
+
+    if (developmentChains.includes(network.name) && vrfCoordinatorV2Mock) {
+        await vrfCoordinatorV2Mock.addConsumer(subscriptionId, lottery.address);
+        log("Consumer is added");
+      }
 
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
         log("Verifying...");
