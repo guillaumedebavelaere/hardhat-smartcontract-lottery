@@ -177,7 +177,7 @@ Go to [automation.chain.link](https://automation.chain.link/new) and register a 
 You're contract is now setup to be a tamper proof autonomous verifiably random lottery. Enter the lottery by running:
 
 ```
-yarn hardhat run scripts/enter.js --network sepolia
+yarn hardhat run scripts/enter.ts --network goerli
 ```
 
 <!-- ESTIMATION GAS COST-->
