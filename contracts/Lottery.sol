@@ -14,7 +14,7 @@ error Lottery_UpkeepNotNeeded(uint256 balance, uint256 numberOfPlayers, uint256 
  * @title Lottery Contract
  * @author Guillaume Debavelaere
  * @notice This contract is for creating an untamperable decentralized smart contract.
- * @dev This implements Chainlink VRF V2 and Chainlink Automation. 
+ * @dev This implements Chainlink VRF V2 and Chainlink Automation.
  */
 contract Lottery is VRFConsumerBaseV2, AutomationCompatibleInterface {
     enum LotteryState {
@@ -31,7 +31,8 @@ contract Lottery is VRFConsumerBaseV2, AutomationCompatibleInterface {
     VRFCoordinatorV2Interface private immutable _vrfCoordinatorV2;
     bytes32 private immutable _gasLane; //  the maximum gas price you are willing to pay for a request in wei.
     uint64 private immutable _subscriptionId;
-    uint32 private immutable _callbackGasLimit; // gas limit to use for the callback request to your contract's fullfillRandomWords()
+    // gas limit to use for the callback request to your contract's fullfillRandomWords()
+    uint32 private immutable _callbackGasLimit;
 
     // Number of confirmations the chainlink nodes should wait before responding.
     // The longest the node waits, the most secure the random value is.
@@ -101,7 +102,11 @@ contract Lottery is VRFConsumerBaseV2, AutomationCompatibleInterface {
     function performUpkeep(bytes calldata /* performData */) external override {
         (bool upkeepNeeded, ) = checkUpkeep("");
         if (!upkeepNeeded) {
-            revert Lottery_UpkeepNotNeeded(address(this).balance, _players.length, uint256(_lotteryState));
+            revert Lottery_UpkeepNotNeeded(
+                address(this).balance,
+                _players.length,
+                uint256(_lotteryState)
+            );
         }
         _lotteryState = LotteryState.CALCULATING;
         uint256 requestId = _vrfCoordinatorV2.requestRandomWords(
@@ -145,7 +150,7 @@ contract Lottery is VRFConsumerBaseV2, AutomationCompatibleInterface {
         return _players[index];
     }
 
-    function getLotteryState() external view returns(LotteryState) {
+    function getLotteryState() external view returns (LotteryState) {
         return _lotteryState;
     }
 
@@ -165,7 +170,7 @@ contract Lottery is VRFConsumerBaseV2, AutomationCompatibleInterface {
         return REQUEST_CONFIRMATIONS;
     }
 
-    function getInterval() external view returns(uint256) {
+    function getInterval() external view returns (uint256) {
         return _interval;
     }
 

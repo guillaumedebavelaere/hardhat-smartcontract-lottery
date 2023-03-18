@@ -3,9 +3,10 @@ import { ethers } from "hardhat";
 import * as dotenv from "dotenv";
 
 dotenv.config();
-const GOERLI_SUBSCRIPTION_ID = process.env.GOERLI_SUBSCRIPTION_ID || "set-goerli-subscription-id-in-dotenv";
-const MUMBAI_SUBSCRIPTION_ID = process.env.MUMBAI_SUBSCRIPTION_ID || "set-mumbai-subscription-id-in-dotenv";
-  
+const GOERLI_SUBSCRIPTION_ID =
+    process.env.GOERLI_SUBSCRIPTION_ID || "set-goerli-subscription-id-in-dotenv";
+const MUMBAI_SUBSCRIPTION_ID =
+    process.env.MUMBAI_SUBSCRIPTION_ID || "set-mumbai-subscription-id-in-dotenv";
 
 const networkConfig: ExtraConfig = {
     31337: {
@@ -16,7 +17,7 @@ const networkConfig: ExtraConfig = {
         verifyContract: false,
         blockConfirmations: 1,
         callbackGasLimit: "500000",
-        interval: "30"
+        interval: "30",
     },
     5: {
         name: "goerli",
@@ -27,7 +28,7 @@ const networkConfig: ExtraConfig = {
         verifyContract: true,
         blockConfirmations: 6,
         callbackGasLimit: "500000",
-        interval: "30"
+        interval: "30",
     },
     80001: {
         name: "mumbai",
@@ -38,7 +39,7 @@ const networkConfig: ExtraConfig = {
         verifyContract: true,
         blockConfirmations: 6,
         callbackGasLimit: "500000",
-        interval: "30"
+        interval: "30",
     },
 };
 
@@ -47,7 +48,7 @@ const developmentChains = ["hardhat", "localhost"];
 interface ExtraConfig {
     [key: number]: {
         name: string;
-        vrfCoordinatorV2: string; 
+        vrfCoordinatorV2: string;
         entranceFee: BigNumber;
         gasLane: string;
         subscriptionId?: string;
